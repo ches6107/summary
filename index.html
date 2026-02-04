@@ -47,7 +47,6 @@
             border-color: #63b3ed;
             color: #fff;
         }
-        /* 直接編輯輸入框樣式 */
         .count-input {
             background-color: #000;
             border: 1px solid #63b3ed;
@@ -84,26 +83,6 @@
         .row-container:hover {
             background-color: #232d3d;
         }
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 50;
-        }
-        .gear-btn {
-            cursor: pointer;
-            color: #718096;
-            transition: color 0.2s;
-        }
-        .gear-btn:hover {
-            color: #63b3ed;
-        }
         .reset-btn {
             color: #718096;
             transition: all 0.2s;
@@ -127,6 +106,38 @@
             color: white;
             box-shadow: 0 0 8px rgba(245, 101, 101, 0.4);
         }
+        .gear-btn {
+            color: #718096;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .gear-btn:hover {
+            color: #63b3ed;
+        }
+        /* 管理視窗樣式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .modal-content {
+            background-color: #2d3748;
+            border: 1px solid #4a5568;
+            border-radius: 0.75rem;
+            width: 90%;
+            max-width: 450px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+        }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -147,14 +158,15 @@
                 <div class="flex justify-between items-center section-title">
                     <div class="flex items-center gap-3">
                         <h2 class="text-blue-400 font-bold text-lg">斷絲原因統計</h2>
-                        <div id="breakage-total" class="group-total-badge" title="斷絲總數計">0</div>
-                        <button onclick="resetGroup('breakage')" class="group-reset-btn" title="整組清空歸零">
+                        <div id="breakage-total" class="group-total-badge" title="斷絲總計">0</div>
+                        <button onclick="resetGroup('breakage')" class="group-reset-btn" title="整組清空">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
                         </button>
                     </div>
-                    <div class="gear-btn" onclick="openManageModal('breakage')" title="管理項目">
+                    <!-- 齒輪設定按鈕 -->
+                    <div class="gear-btn" onclick="openManageModal('breakage')" title="設定原因項目">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -169,14 +181,15 @@
                 <div class="flex justify-between items-center section-title">
                     <div class="flex items-center gap-3">
                         <h2 class="text-orange-400 font-bold text-lg">空錠原因統計</h2>
-                        <div id="empty-total" class="group-total-badge" style="border-color: #ed8936; color: #ed8936;" title="空錠總數計">0</div>
-                        <button onclick="resetGroup('empty')" class="group-reset-btn" title="整組清空歸零">
+                        <div id="empty-total" class="group-total-badge" style="border-color: #ed8936; color: #ed8936;" title="空錠總計">0</div>
+                        <button onclick="resetGroup('empty')" class="group-reset-btn" title="整組清空">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
                         </button>
                     </div>
-                    <div class="gear-btn" onclick="openManageModal('empty')" title="管理項目">
+                    <!-- 齒輪設定按鈕 -->
+                    <div class="gear-btn" onclick="openManageModal('empty')" title="設定原因項目">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -188,28 +201,30 @@
         </div>
     </div>
 
-    <!-- 管理清單彈窗 -->
+    <!-- 管理項目彈窗 -->
     <div id="manage-modal" class="modal-overlay">
-        <div class="bg-gray-800 p-6 rounded-lg shadow-xl border border-gray-600 w-full max-w-md max-h-[80vh] flex flex-col">
-            <h3 id="manage-title" class="text-xl font-bold mb-4">管理原因項目</h3>
+        <div class="modal-content">
+            <h3 id="modal-title" class="text-xl font-bold mb-4">管理原因項目</h3>
             <div class="flex gap-2 mb-4">
-                <input type="text" id="new-reason-input" class="flex-grow bg-gray-900 border border-gray-600 text-white p-2 rounded focus:border-blue-500 outline-none" placeholder="新增原因名稱">
-                <button onclick="addNewReasonFromModal()" class="px-4 py-2 bg-green-600 rounded hover:bg-green-500 text-sm font-bold">新增</button>
+                <input type="text" id="new-item-input" class="flex-grow bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white outline-none focus:border-blue-500" placeholder="輸入新原因項目">
+                <button onclick="addNewItem()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2 rounded text-sm">新增</button>
             </div>
-            <div id="manage-items-list" class="overflow-y-auto flex-grow space-y-2 pr-2"></div>
+            <div id="items-list" class="overflow-y-auto flex-grow pr-2 space-y-2">
+                <!-- 項目列表會動態生成 -->
+            </div>
             <div class="mt-6 flex justify-end">
-                <button onclick="closeModal('manage-modal')" class="px-6 py-2 bg-blue-600 rounded hover:bg-blue-500 font-bold">完成</button>
+                <button onclick="closeModal()" class="bg-gray-600 hover:bg-gray-500 text-white font-bold px-6 py-2 rounded">關閉</button>
             </div>
         </div>
     </div>
 
     <script>
-        let breakageReasons = ["毛破", "反捲", "無管底紗", "無絲頭", "單關巡", "絲束正常", "夾紗", "夾廢絲", "鄰錠波及", "撞傷", "氣泡數降A2"];
-        let emptyReasons = ["車卡", "反捲", "漿疤", "無絲頭", "中層紗", "異常卡", "單關", "抽米長", "跳停", "撞傷"];
+        let breakageReasons = ["毛破", "反捲", "無絲頭", "單關巡", "夾廢絲", "氣泡數降A2", "夾紗", "絲束正常", "無管底紗", "撞傷", "鄰錠波及"];
+        let emptyReasons = ["車卡", "反捲", "無絲頭", "單關巡", "異常卡", "中層紗", "漿疤", "抽米長", "跳停", "撞傷"];
         
         const incrementValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40];
         const stats = { breakage: {}, empty: {} };
-        let currentManageType = null;
+        let currentModalType = ''; // 'breakage' 或 'empty'
 
         function initStats() {
             breakageReasons.forEach(r => { if(stats.breakage[r] === undefined) stats.breakage[r] = 0; });
@@ -242,63 +257,71 @@
             }
         }
 
-        // 修改原因項目的管理
+        // --- 管理彈窗邏輯 ---
         function openManageModal(type) {
-            currentManageType = type;
+            currentModalType = type;
             const modal = document.getElementById('manage-modal');
-            const title = document.getElementById('manage-title');
-            title.innerText = type === 'breakage' ? '管理斷絲原因項目' : '管理空錠原因項目';
+            const title = document.getElementById('modal-title');
+            title.innerText = type === 'breakage' ? '管理：斷絲原因清單' : '管理：空錠原因清單';
             title.className = type === 'breakage' ? 'text-xl font-bold mb-4 text-blue-400' : 'text-xl font-bold mb-4 text-orange-400';
-            renderManageList();
+            
+            renderModalList();
             modal.style.display = 'flex';
+            document.getElementById('new-item-input').focus();
         }
 
-        function renderManageList() {
-            const container = document.getElementById('manage-items-list');
-            container.innerHTML = '';
-            const list = currentManageType === 'breakage' ? breakageReasons : emptyReasons;
+        function closeModal() {
+            document.getElementById('manage-modal').style.display = 'none';
+        }
+
+        function renderModalList() {
+            const listContainer = document.getElementById('items-list');
+            listContainer.innerHTML = '';
+            const list = currentModalType === 'breakage' ? breakageReasons : emptyReasons;
+            
             list.forEach((reason, index) => {
-                const item = document.createElement('div');
-                item.className = "flex items-center justify-between bg-gray-700 p-2 rounded";
-                item.innerHTML = `
-                    <span>${reason}</span>
-                    <button onclick="removeReason(${index})" class="text-red-400 hover:text-red-300 p-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center bg-gray-800 p-2 rounded border border-gray-700";
+                div.innerHTML = `
+                    <span class="text-sm">${reason}</span>
+                    <button onclick="removeItem(${index})" class="text-red-500 hover:text-red-400 p-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
                         </svg>
                     </button>
                 `;
-                container.appendChild(item);
+                listContainer.appendChild(div);
             });
         }
 
-        function addNewReasonFromModal() {
-            const input = document.getElementById('new-reason-input');
-            const value = input.value.trim();
-            if (!value) return;
-            const list = currentManageType === 'breakage' ? breakageReasons : emptyReasons;
-            if (list.includes(value)) { alert('原因名稱已存在'); return; }
-            list.push(value);
-            stats[currentManageType][value] = 0;
+        function addNewItem() {
+            const input = document.getElementById('new-item-input');
+            const val = input.value.trim();
+            if (!val) return;
+            
+            const list = currentModalType === 'breakage' ? breakageReasons : emptyReasons;
+            if (list.includes(val)) {
+                alert('該項目已存在於清單中');
+                return;
+            }
+            
+            list.push(val);
+            stats[currentModalType][val] = 0;
             input.value = '';
-            renderManageList();
+            renderModalList();
             render();
         }
 
-        function removeReason(index) {
-            const list = currentManageType === 'breakage' ? breakageReasons : emptyReasons;
-            const reason = list[index];
-            if (confirm(`確定要刪除「${reason}」嗎？`)) {
-                delete stats[currentManageType][reason];
-                list.splice(index, 1);
-                renderManageList();
-                render();
-            }
+        function removeItem(index) {
+            const list = currentModalType === 'breakage' ? breakageReasons : emptyReasons;
+            const removed = list.splice(index, 1)[0];
+            // 刪除統計數據中的該項資料
+            delete stats[currentModalType][removed];
+            renderModalList();
+            render();
         }
 
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-        // 核心渲染邏輯
+        // --- 主介面渲染 ---
         function createRow(type, reason, currentCount) {
             const container = document.createElement('div');
             container.className = "row-container flex flex-col gap-2";
@@ -313,23 +336,17 @@
             const countGroup = document.createElement('div');
             countGroup.className = "flex items-center gap-2";
 
-            // 數值顯示區域（點擊可切換為輸入框）
             const countDisplay = document.createElement('div');
             countDisplay.className = "count-display text-xl";
             countDisplay.innerText = currentCount;
             
-            // 點擊事件：直接在原地產生 input
             countDisplay.onclick = function() {
                 const input = document.createElement('input');
                 input.type = 'number';
                 input.className = "count-input text-xl";
                 input.value = currentCount;
                 
-                // 失去焦點或按下 Enter 則儲存
-                const save = () => {
-                    setExactCount(type, reason, input.value);
-                };
-                
+                const save = () => { setExactCount(type, reason, input.value); };
                 input.onblur = save;
                 input.onkeydown = (e) => {
                     if (e.key === 'Enter') save();
@@ -343,7 +360,6 @@
 
             const resetIcon = document.createElement('div');
             resetIcon.className = "reset-btn";
-            resetIcon.title = "單項重置為 0";
             resetIcon.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -377,7 +393,6 @@
             const breakageContainer = document.getElementById('breakage-list');
             const emptyContainer = document.getElementById('empty-list');
             
-            // 更新總計
             document.getElementById('breakage-total').innerText = breakageReasons.reduce((s, r) => s + (stats.breakage[r] || 0), 0);
             document.getElementById('empty-total').innerText = emptyReasons.reduce((s, r) => s + (stats.empty[r] || 0), 0);
 
@@ -391,9 +406,10 @@
         initStats();
         render();
 
-        document.getElementById('new-reason-input').onkeydown = (e) => {
-            if (e.key === 'Enter') addNewReasonFromModal();
-        };
+        // 綁定輸入框 Enter 鍵
+        document.getElementById('new-item-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') addNewItem();
+        });
     </script>
 </body>
 </html>
