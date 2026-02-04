@@ -138,8 +138,8 @@
             <section class="column-half">
                 <div class="flex justify-between items-center section-title">
                     <div class="flex items-center gap-2">
-                        <h2 class="text-blue-400 font-bold text-base">斷絲原因</h2>
                         <div id="breakage-total" class="group-total-badge">0</div>
+                        <h2 class="text-blue-400 font-bold text-base">斷絲原因</h2>
                         <button onclick="resetGroup('breakage')" class="group-reset-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -159,8 +159,8 @@
             <section class="column-half">
                 <div class="flex justify-between items-center section-title">
                     <div class="flex items-center gap-2">
-                        <h2 class="text-orange-400 font-bold text-base">空錠原因</h2>
                         <div id="empty-total" class="group-total-badge" style="border-color: #ed8936; color: #ed8936;">0</div>
+                        <h2 class="text-orange-400 font-bold text-base">空錠原因</h2>
                         <button onclick="resetGroup('empty')" class="group-reset-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -288,10 +288,6 @@
             const top = document.createElement('div');
             top.className = "flex items-center justify-between px-1 mb-1";
 
-            const label = document.createElement('div');
-            label.className = "text-gray-200 text-sm font-medium truncate flex-1";
-            label.innerText = reason;
-
             const ctr = document.createElement('div');
             ctr.className = "flex items-center gap-1";
 
@@ -316,8 +312,14 @@
 
             ctr.appendChild(countDisplay);
             ctr.appendChild(resetIcon);
-            top.appendChild(label);
+
+            const label = document.createElement('div');
+            label.className = "text-gray-200 text-sm font-medium truncate flex-1 ml-2";
+            label.innerText = reason;
+
+            // 新佈局：[數量/重置] [原因名稱]
             top.appendChild(ctr);
+            top.appendChild(label);
 
             const btns = document.createElement('div');
             btns.className = "flex flex-wrap gap-1 px-1";
