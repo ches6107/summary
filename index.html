@@ -2,7 +2,8 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 調整 viewport 允許使用者手動縮放 (user-scalable=yes) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>全機台彙總統計</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -10,42 +11,33 @@
             background-color: #1a202c;
             color: #e2e8f0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            min-width: 800px; /* 確保在小螢幕上也能維持左右佈局的空間 */
         }
         .btn-add {
             transition: all 0.2s;
             background-color: #4a5568;
             color: #edf2f7;
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.4rem;
             border-radius: 0.25rem;
-            min-width: 32px;
+            min-width: 28px;
             text-align: center;
         }
         .btn-add:hover {
             background-color: #718096;
             transform: translateY(-1px);
         }
-        .btn-add:active {
-            transform: translateY(0);
-            background-color: #a0aec0;
-        }
         .count-display {
             background-color: #2d3748;
             border: 1px solid #4a5568;
             color: #63b3ed;
-            padding: 2px 10px;
+            padding: 1px 8px;
             border-radius: 4px;
-            min-width: 60px;
+            min-width: 50px;
             text-align: center;
             font-weight: bold;
             font-family: monospace;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-        .count-display:hover {
-            background-color: #4a5568;
-            border-color: #63b3ed;
-            color: #fff;
         }
         .count-input {
             background-color: #000;
@@ -53,7 +45,7 @@
             color: #fff;
             padding: 1px 8px;
             border-radius: 4px;
-            width: 60px;
+            width: 50px;
             text-align: center;
             font-weight: bold;
             font-family: monospace;
@@ -63,56 +55,33 @@
             background-color: #1a202c;
             border: 2px solid #4fd1c5;
             color: #4fd1c5;
-            padding: 2px 12px;
+            padding: 1px 8px;
             border-radius: 6px;
-            min-width: 65px;
+            min-width: 55px;
             text-align: center;
             font-weight: 800;
-            font-size: 1.1rem;
-            box-shadow: 0 0 10px rgba(79, 209, 197, 0.2);
+            font-size: 1rem;
         }
         .section-title {
             border-bottom: 1px solid #4a5568;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
+            padding-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
         }
         .row-container {
             border-bottom: 1px solid #2d3748;
-            padding: 0.75rem 0;
+            padding: 0.4rem 0;
         }
-        .row-container:hover {
-            background-color: #232d3d;
-        }
-        .reset-btn {
+        .gear-btn {
             color: #718096;
-            transition: all 0.2s;
             cursor: pointer;
-        }
-        .reset-btn:hover {
-            color: #f56565;
-            transform: rotate(-45deg);
         }
         .group-reset-btn {
             background-color: #2d3748;
             border: 1px solid #f56565;
             color: #f56565;
-            padding: 4px;
-            border-radius: 6px;
-            transition: all 0.2s;
+            padding: 2px;
+            border-radius: 4px;
             cursor: pointer;
-        }
-        .group-reset-btn:hover {
-            background-color: #f56565;
-            color: white;
-            box-shadow: 0 0 8px rgba(245, 101, 101, 0.4);
-        }
-        .gear-btn {
-            color: #718096;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .gear-btn:hover {
-            color: #63b3ed;
         }
         /* 管理視窗樣式 */
         .modal-overlay {
@@ -132,44 +101,54 @@
             border: 1px solid #4a5568;
             border-radius: 0.75rem;
             width: 90%;
-            max-width: 450px;
-            max-height: 80vh;
+            max-width: 400px;
+            max-height: 85vh;
             display: flex;
             flex-direction: column;
-            padding: 1.5rem;
+            padding: 1.25rem;
+        }
+        /* 強制左右並排的核心樣式 */
+        .desktop-layout {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            gap: 1.5rem;
+        }
+        .column-half {
+            flex: 1;
+            min-width: 0; /* 防止溢出 */
         }
     </style>
 </head>
-<body class="p-4 md:p-8">
-    <div class="max-w-6xl mx-auto">
-        <header class="flex items-center mb-8">
-            <div class="w-8 h-8 mr-3">
+<body class="p-2 md:p-4">
+    <div class="mx-auto" style="max-width: 1200px;">
+        <header class="flex items-center mb-4">
+            <div class="w-6 h-6 mr-2">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect x="4" y="4" width="16" height="16" rx="2" fill="#4299E1"/>
                     <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </div>
-            <h1 class="text-2xl font-bold tracking-wider">全機台彙總統計</h1>
+            <h1 class="text-xl font-bold tracking-wider">全機台彙總統計</h1>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- 使用 desktop-layout 強制在所有尺寸下維持 row -->
+        <div class="desktop-layout">
             <!-- 斷絲原因統計 -->
-            <section>
+            <section class="column-half">
                 <div class="flex justify-between items-center section-title">
-                    <div class="flex items-center gap-3">
-                        <h2 class="text-blue-400 font-bold text-lg">斷絲原因統計</h2>
-                        <div id="breakage-total" class="group-total-badge" title="斷絲總計">0</div>
-                        <button onclick="resetGroup('breakage')" class="group-reset-btn" title="整組清空">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-blue-400 font-bold text-base">斷絲原因</h2>
+                        <div id="breakage-total" class="group-total-badge">0</div>
+                        <button onclick="resetGroup('breakage')" class="group-reset-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
                         </button>
                     </div>
-                    <!-- 齒輪設定按鈕 -->
-                    <div class="gear-btn" onclick="openManageModal('breakage')" title="設定原因項目">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="gear-btn" onclick="openManageModal('breakage')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                     </div>
                 </div>
@@ -177,22 +156,20 @@
             </section>
 
             <!-- 空錠原因統計 -->
-            <section>
+            <section class="column-half">
                 <div class="flex justify-between items-center section-title">
-                    <div class="flex items-center gap-3">
-                        <h2 class="text-orange-400 font-bold text-lg">空錠原因統計</h2>
-                        <div id="empty-total" class="group-total-badge" style="border-color: #ed8936; color: #ed8936;" title="空錠總計">0</div>
-                        <button onclick="resetGroup('empty')" class="group-reset-btn" title="整組清空">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-orange-400 font-bold text-base">空錠原因</h2>
+                        <div id="empty-total" class="group-total-badge" style="border-color: #ed8936; color: #ed8936;">0</div>
+                        <button onclick="resetGroup('empty')" class="group-reset-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
                         </button>
                     </div>
-                    <!-- 齒輪設定按鈕 -->
-                    <div class="gear-btn" onclick="openManageModal('empty')" title="設定原因項目">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="gear-btn" onclick="openManageModal('empty')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                     </div>
                 </div>
@@ -204,27 +181,26 @@
     <!-- 管理項目彈窗 -->
     <div id="manage-modal" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="modal-title" class="text-xl font-bold mb-4">管理原因項目</h3>
+            <h3 id="modal-title" class="text-lg font-bold mb-4">管理原因項目</h3>
             <div class="flex gap-2 mb-4">
-                <input type="text" id="new-item-input" class="flex-grow bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white outline-none focus:border-blue-500" placeholder="輸入新原因項目">
-                <button onclick="addNewItem()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2 rounded text-sm">新增</button>
+                <input type="text" id="new-item-input" class="flex-grow bg-gray-900 border border-gray-600 rounded px-2 py-1 text-white text-sm outline-none" placeholder="輸入新原因">
+                <button onclick="addNewItem()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-1 rounded text-xs">新增</button>
             </div>
-            <div id="items-list" class="overflow-y-auto flex-grow pr-2 space-y-2">
-                <!-- 項目列表會動態生成 -->
-            </div>
-            <div class="mt-6 flex justify-end">
-                <button onclick="closeModal()" class="bg-gray-600 hover:bg-gray-500 text-white font-bold px-6 py-2 rounded">關閉</button>
+            <div id="items-list" class="overflow-y-auto flex-grow pr-1 space-y-1"></div>
+            <div class="mt-4 flex justify-end">
+                <button onclick="closeModal()" class="bg-gray-600 hover:bg-gray-500 text-white font-bold px-4 py-1 rounded text-sm">關閉</button>
             </div>
         </div>
     </div>
 
     <script>
+        // 預設清單
         let breakageReasons = ["毛破", "反捲", "無絲頭", "單關巡", "夾廢絲", "氣泡數降A2", "夾紗", "絲束正常", "無管底紗", "撞傷", "鄰錠波及"];
         let emptyReasons = ["車卡", "反捲", "無絲頭", "單關巡", "異常卡", "中層紗", "漿疤", "抽米長", "跳停", "撞傷"];
         
-        const incrementValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40];
+        const incrementValues = [1, 2, 3, 4, 5, 10, 20]; // 稍微減少手機顯示按鈕數
         const stats = { breakage: {}, empty: {} };
-        let currentModalType = ''; // 'breakage' 或 'empty'
+        let currentModalType = '';
 
         function initStats() {
             breakageReasons.forEach(r => { if(stats.breakage[r] === undefined) stats.breakage[r] = 0; });
@@ -249,25 +225,21 @@
         }
 
         function resetGroup(type) {
-            const title = type === 'breakage' ? '斷絲原因' : '空錠原因';
-            if (confirm(`確定要將「${title}」的所有統計數值歸零嗎？`)) {
+            if (confirm(`歸零該大類所有數據？`)) {
                 const list = type === 'breakage' ? breakageReasons : emptyReasons;
                 list.forEach(reason => { stats[type][reason] = 0; });
                 render();
             }
         }
 
-        // --- 管理彈窗邏輯 ---
+        // 管理彈窗
         function openManageModal(type) {
             currentModalType = type;
             const modal = document.getElementById('manage-modal');
             const title = document.getElementById('modal-title');
-            title.innerText = type === 'breakage' ? '管理：斷絲原因清單' : '管理：空錠原因清單';
-            title.className = type === 'breakage' ? 'text-xl font-bold mb-4 text-blue-400' : 'text-xl font-bold mb-4 text-orange-400';
-            
+            title.innerText = type === 'breakage' ? '管理：斷絲原因' : '管理：空錠原因';
             renderModalList();
             modal.style.display = 'flex';
-            document.getElementById('new-item-input').focus();
         }
 
         function closeModal() {
@@ -278,18 +250,10 @@
             const listContainer = document.getElementById('items-list');
             listContainer.innerHTML = '';
             const list = currentModalType === 'breakage' ? breakageReasons : emptyReasons;
-            
             list.forEach((reason, index) => {
                 const div = document.createElement('div');
                 div.className = "flex justify-between items-center bg-gray-800 p-2 rounded border border-gray-700";
-                div.innerHTML = `
-                    <span class="text-sm">${reason}</span>
-                    <button onclick="removeItem(${index})" class="text-red-500 hover:text-red-400 p-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                `;
+                div.innerHTML = `<span class="text-xs">${reason}</span><button onclick="removeItem(${index})" class="text-red-500 text-xs">刪除</button>`;
                 listContainer.appendChild(div);
             });
         }
@@ -298,93 +262,74 @@
             const input = document.getElementById('new-item-input');
             const val = input.value.trim();
             if (!val) return;
-            
             const list = currentModalType === 'breakage' ? breakageReasons : emptyReasons;
-            if (list.includes(val)) {
-                alert('該項目已存在於清單中');
-                return;
+            if (!list.includes(val)) {
+                list.push(val);
+                stats[currentModalType][val] = 0;
+                input.value = '';
+                renderModalList();
+                render();
             }
-            
-            list.push(val);
-            stats[currentModalType][val] = 0;
-            input.value = '';
-            renderModalList();
-            render();
         }
 
         function removeItem(index) {
             const list = currentModalType === 'breakage' ? breakageReasons : emptyReasons;
             const removed = list.splice(index, 1)[0];
-            // 刪除統計數據中的該項資料
             delete stats[currentModalType][removed];
             renderModalList();
             render();
         }
 
-        // --- 主介面渲染 ---
         function createRow(type, reason, currentCount) {
             const container = document.createElement('div');
-            container.className = "row-container flex flex-col gap-2";
+            container.className = "row-container";
 
-            const infoRow = document.createElement('div');
-            infoRow.className = "flex items-center gap-4 px-2";
+            const top = document.createElement('div');
+            top.className = "flex items-center justify-between px-1 mb-1";
 
             const label = document.createElement('div');
-            label.className = "text-gray-200 font-medium text-base w-24 truncate";
+            label.className = "text-gray-200 text-sm font-medium truncate flex-1";
             label.innerText = reason;
 
-            const countGroup = document.createElement('div');
-            countGroup.className = "flex items-center gap-2";
+            const ctr = document.createElement('div');
+            ctr.className = "flex items-center gap-1";
 
             const countDisplay = document.createElement('div');
-            countDisplay.className = "count-display text-xl";
+            countDisplay.className = "count-display text-sm";
             countDisplay.innerText = currentCount;
-            
             countDisplay.onclick = function() {
                 const input = document.createElement('input');
                 input.type = 'number';
-                input.className = "count-input text-xl";
+                input.className = "count-input text-sm";
                 input.value = currentCount;
-                
-                const save = () => { setExactCount(type, reason, input.value); };
-                input.onblur = save;
-                input.onkeydown = (e) => {
-                    if (e.key === 'Enter') save();
-                    if (e.key === 'Escape') render();
-                };
-
-                countGroup.replaceChild(input, countDisplay);
+                input.onblur = () => setExactCount(type, reason, input.value);
+                input.onkeydown = (e) => { if(e.key === 'Enter') setExactCount(type, reason, input.value); };
+                ctr.replaceChild(input, countDisplay);
                 input.focus();
-                input.select();
             };
 
             const resetIcon = document.createElement('div');
-            resetIcon.className = "reset-btn";
-            resetIcon.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-            `;
+            resetIcon.className = "text-gray-500 cursor-pointer hover:text-red-400";
+            resetIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>`;
             resetIcon.onclick = () => resetCount(type, reason);
 
-            countGroup.appendChild(countDisplay);
-            countGroup.appendChild(resetIcon);
+            ctr.appendChild(countDisplay);
+            ctr.appendChild(resetIcon);
+            top.appendChild(label);
+            top.appendChild(ctr);
 
-            infoRow.appendChild(label);
-            infoRow.appendChild(countGroup);
-
-            const btnGroup = document.createElement('div');
-            btnGroup.className = "flex flex-wrap gap-1 px-2 mt-1";
-            incrementValues.forEach(val => {
-                const btn = document.createElement('button');
-                btn.className = "btn-add";
-                btn.innerText = `+${val}`;
-                btn.onclick = () => updateCount(type, reason, val);
-                btnGroup.appendChild(btn);
+            const btns = document.createElement('div');
+            btns.className = "flex flex-wrap gap-1 px-1";
+            incrementValues.forEach(v => {
+                const b = document.createElement('button');
+                b.className = "btn-add";
+                b.innerText = `+${v}`;
+                b.onclick = () => updateCount(type, reason, v);
+                btns.appendChild(b);
             });
 
-            container.appendChild(infoRow);
-            container.appendChild(btnGroup);
+            container.appendChild(top);
+            container.appendChild(btns);
             return container;
         }
 
@@ -392,24 +337,15 @@
             initStats();
             const breakageContainer = document.getElementById('breakage-list');
             const emptyContainer = document.getElementById('empty-list');
-            
             document.getElementById('breakage-total').innerText = breakageReasons.reduce((s, r) => s + (stats.breakage[r] || 0), 0);
             document.getElementById('empty-total').innerText = emptyReasons.reduce((s, r) => s + (stats.empty[r] || 0), 0);
-
             breakageContainer.innerHTML = '';
             emptyContainer.innerHTML = '';
-
-            breakageReasons.forEach(reason => breakageContainer.appendChild(createRow('breakage', reason, stats.breakage[reason])));
-            emptyReasons.forEach(reason => emptyContainer.appendChild(createRow('empty', reason, stats.empty[reason])));
+            breakageReasons.forEach(r => breakageContainer.appendChild(createRow('breakage', r, stats.breakage[r])));
+            emptyReasons.forEach(r => emptyContainer.appendChild(createRow('empty', r, stats.empty[r])));
         }
 
-        initStats();
         render();
-
-        // 綁定輸入框 Enter 鍵
-        document.getElementById('new-item-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') addNewItem();
-        });
     </script>
 </body>
 </html>
