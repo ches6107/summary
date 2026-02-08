@@ -2,7 +2,6 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <!-- 調整 viewport 允許使用者手動縮放 (user-scalable=yes) -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>全機台彙總統計</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,7 +10,7 @@
             background-color: #1a202c;
             color: #e2e8f0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            min-width: 800px; /* 確保在小螢幕上也能維持左右佈局的空間 */
+            min-width: 800px;
         }
         .btn-add {
             transition: all 0.2s;
@@ -83,7 +82,6 @@
             border-radius: 4px;
             cursor: pointer;
         }
-        /* 管理視窗樣式 */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -107,7 +105,6 @@
             flex-direction: column;
             padding: 1.25rem;
         }
-        /* 強制左右並排的核心樣式 */
         .desktop-layout {
             display: flex !important;
             flex-direction: row !important;
@@ -116,7 +113,7 @@
         }
         .column-half {
             flex: 1;
-            min-width: 0; /* 防止溢出 */
+            min-width: 0;
         }
     </style>
 </head>
@@ -132,7 +129,6 @@
             <h1 class="text-xl font-bold tracking-wider">全機台彙總統計</h1>
         </header>
 
-        <!-- 使用 desktop-layout 強制維持 row -->
         <div class="desktop-layout">
             <!-- 斷絲原因統計 -->
             <section class="column-half">
@@ -148,7 +144,7 @@
                     </div>
                     <div class="gear-btn" onclick="openManageModal('breakage')">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                         </svg>
                     </div>
                 </div>
@@ -169,7 +165,7 @@
                     </div>
                     <div class="gear-btn" onclick="openManageModal('empty')">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                         </svg>
                     </div>
                 </div>
@@ -194,11 +190,10 @@
     </div>
 
     <script>
-        // 預設清單
-        let breakageReasons = ["毛破", "反捲", "無絲頭", "單關巡", "夾廢絲", "氣泡數降A2", "夾紗", "絲束正常", "無管底紗", "撞傷", "鄰錠波及"];
-        let emptyReasons = ["車卡", "反捲", "無絲頭", "單關巡", "異常卡", "中層紗", "漿疤", "抽米長", "跳停", "撞傷"];
+        // 根據 image_b4cc9c.png 更新預設清單
+        let breakageReasons = ["毛破", "反捲", "無絲頭", "單關巡", "夾廢絲", "氣泡數降A2", "夾紗", "絲束正常", "異常卡", "無管底紗", "撞傷", "鄰錠波及"];
+        let emptyReasons = ["車卡", "反捲", "無絲頭", "單關巡", "異常卡", "毛破", "中層紗", "漿疤", "抽米長", "跳停", "撞傷"];
         
-        // 修改後的按鈕清單：新增 +6,+7,+8,+9 移除 +20
         const incrementValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; 
         const stats = { breakage: {}, empty: {} };
         let currentModalType = '';
@@ -233,7 +228,6 @@
             }
         }
 
-        // 管理彈窗
         function openManageModal(type) {
             currentModalType = type;
             const modal = document.getElementById('manage-modal');
@@ -317,7 +311,6 @@
             label.className = "text-gray-200 text-sm font-medium truncate flex-1 ml-2";
             label.innerText = reason;
 
-            // 新佈局：[數量/重置] [原因名稱]
             top.appendChild(ctr);
             top.appendChild(label);
 
